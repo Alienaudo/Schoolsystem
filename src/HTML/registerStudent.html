@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--<link rel="stylesheet" href="./styles/style.css">-->
+    <title>Cadastro</title>
+</head>
+<body>
+    <h1>Cadastro</h1>
+    
+    <form name="formRes" action="submitForm.ts" onsubmit="" method="post" autocomplete="on">
+
+        <p><label for="nome">Nome Completo: </label>
+            <input type="text" id="nome" name="nome" placeholder="Digite seu nome completo"><br></p>
+        
+        <p><label for="nascimento">Data de Nascimento: </label>
+            <input type="date" id="nascimento" name="nascimento"><br></p>
+
+        <label for="gender">Gênero: </label>
+        <select name="gender" id="gender">
+            <option value="male">Masculino</option>
+            <option value="fimale">Feminino</option>
+            <option value="none">Prefiro nao informar</option>
+        </select>
+
+        <p><label for="cpf">CPF: </label>
+            <input type="text" id="cpf" name="cpf" placeholder="Digite seu CPF"><br></p>
+        
+        <p><label for="telefone">Telefone: </label>
+            <input type="tel" id="telefone" name="telefone" placeholder="Digite seu telefone"><br></p>
+
+        <p><label for="email">E-mail: </label>
+            <input type="email" id="email" name="email" placeholder="Digite seu e-mail"><br>    </p>
+        
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <footer>
+    </footer>
+</body>
+</html>

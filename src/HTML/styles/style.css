@@ -1,0 +1,23 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: silver;
+  display: block;
+  margin: auto;
+  width: fit-content;
+}
+
+label {
+  display: block;
+  width: 60%;
+}
+
+input[type=text], input[type=date], input[type=tel],
+input[type=email] {
+  display: block;
+  text-align: center;
+  width: 500px;
+  height: 30px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}/*# sourceMappingURL=style.css.map */
