@@ -5,7 +5,9 @@ services:
     container_name: mariadb
     
     environment:
-      MARIADB_ROOT_PASSWORD: 123
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_HOST: ${DB_HOST:-localhost}
+      MARIADB_USER: ${DB_USER:-admin}
 
     volumes:
       - mariadb_volume:/var/lib/mysql
@@ -15,6 +17,18 @@ services:
     
     ports:
       - 3307:3306
+
+  api:
+    image: node:23.6.0
+
+    environment:
+      DB_PASSWORD : "123"
+
+      HOST: ${HOST:-localhost}
+      PORT_SERVER: ${PORT_SERVER:-3000}
+
+    ports:
+      - ${PORT_SERVER:-3000}
 
 volumes:
   mariadb_volume:
