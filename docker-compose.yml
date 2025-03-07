@@ -1,37 +1,35 @@
 services:
   db:
-    image: mariadb
+    image: mariadb:11
 
     container_name: mariadb
     
     environment:
-      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ScholarDB
       MARIADB_HOST: ${DB_HOST:-localhost}
       MARIADB_USER: ${DB_USER:-admin}
 
     volumes:
-      - mariadb_volume:/var/lib/mysql
+      - mariadb_volume:/var/lib/mariadb
 
-    networks:
-      - mariadb_network
-    
     ports:
       - 3307:3306
+      
+    restart: always
 
-  api:
-    image: node:23.6.0
+  # api:
+  #   image: node:23.9.0
 
-    environment:
-      DB_PASSWORD : "123"
+  #   environment:
+  #     DB_PASSWORD : "123"
 
-      HOST: ${HOST:-localhost}
-      PORT_SERVER: ${PORT_SERVER:-3000}
+  #     HOST: ${HOST:-localhost}
+  #     PORT_SERVER: ${PORT_SERVER:-3000}
 
-    ports:
-      - ${PORT_SERVER:-3000}
+  #   ports:
+  #     - ${PORT_SERVER:-3000}
 
 volumes:
   mariadb_volume:
-
-networks:
-  mariadb_network:
+    driver: local
