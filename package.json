@@ -3,6 +3,7 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "mariadb": "^3.4.0",
+    "mysql2": "^3.12.0",
     "pnpm": "^9.15.5",
     "ts-dotenv": "^0.9.1",
     "ts-node": "^10.9.2"
@@ -15,7 +16,7 @@
   },
   "scripts": {
     "test": "jest  --watch",
-    "start": "nodemon --env-file=./src/config/.env ./dist/http/server.js",
+    "start": "nodemon --env-file=.env ./dist/api/server.js",
     "build": "tsc --watch"
   },
   "author": "Tiago S.Veneza",
@@ -30,6 +31,7 @@
     "@types/jest": "^29.5.14",
     "eslint": "^9.20.1",
     "jest": "^29.7.0",
+    "knex": "^3.1.0",
     "nodemon": "^3.1.9",
     "ts-jest": "^29.2.5",
     "typescript": "^5.7.3",
