@@ -1,5 +1,7 @@
 export interface subject {
+    
     subjectName: string,
-    hours: number
+    hours: number,
+    description: string
 
 };

@@ -1,10 +1,12 @@
 export interface teacher {
-    nome: string,
-    age: number,
+    
+    name: string,
+    birthdate: Date,
     cpf: string,
     gender: string,
-    phone?: string,
+    phone?: string | undefined,
     email: string,
-    subject: string
+    subject: string,
+    subjectId: number
 
 };

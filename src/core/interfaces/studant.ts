@@ -1,11 +1,13 @@
-export interface studants {
+export interface Studants {
+    
     name: string,
-    dateOfBirth: Date,
+    birthdate: Date,
     gender: string,
     cpf: string,
-    phone?: string,
+    phone?: string | undefined,
     email: string,
     subject: string,
-    registered: boolean
+    registered: boolean,
+    subjectId: number
 
 };
