@@ -38,7 +38,7 @@ export async function up(knex: Knex): Promise<void> {
             .notNullable();
     
         table
-            .string('cpf', 16)
+            .string('cpf', 14)
             .unique()
             .notNullable();
     
@@ -47,7 +47,7 @@ export async function up(knex: Knex): Promise<void> {
             .nullable();
     
         table
-            .string('email', 100)
+            .string('email', 254)
             .unique()
             .notNullable();
     

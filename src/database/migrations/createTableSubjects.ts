@@ -11,7 +11,7 @@ export async function up(knex: Knex): Promise<void> {
         return knex.destroy();
 
     }
-
+    
     await knex.schema.createTable('subjects', (table) => {
         
         table
