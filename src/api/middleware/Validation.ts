@@ -7,6 +7,11 @@ type TAllSchemas = Record<TProperts, ObjectSchema<any>>;
 
 type TVAlidation = (schemas: Partial<TAllSchemas>) => RequestHandler
 
+/**
+ * Middleware de validação.
+ * @param schemas Recebe os esquemas de validação.
+ * @returns 
+ */
 export const validation: TVAlidation = (schemas) => async (req, res, next) => {
     
     const errorsResult: Record<string, Record<string, string>> = {};
@@ -34,7 +39,7 @@ export const validation: TVAlidation = (schemas) => async (req, res, next) => {
             });
             
             errorsResult[key] = errors;
-            
+
         }
         
     };
