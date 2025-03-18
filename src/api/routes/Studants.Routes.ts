@@ -1,15 +1,75 @@
 import express from 'express';
-
-import StudantsController from '../../core/controllers/Studants.Controller.js';
+import StudentsController from '../../core/controllers/Students.Controller.js';
 
 const router = express.Router();
 
-const studantsController = new StudantsController();
+const studantsController = new StudentsController();
 
-export const enrollStudent = router.post('/', studantsController.createValidation, studantsController.enroll);
+const enrollStudent = router.post('/',
 
-export const getStudant = [];
+    studantsController.registerValidation, 
+    studantsController.register
 
-export const getAllStudants = [];
+);
 
-export const removeStudant = [];
+const updateStudentByCpf = router.put('/', 
+
+    studantsController.updateByCpfValidation,
+    studantsController.updateByCpf
+
+);
+
+const removeStudantByCpf = router.delete('/', 
+
+    studantsController.removeByCpfValidation,
+    studantsController.removeByCpf
+
+)
+
+const getAllStudents = router.get('/',
+
+    studantsController.getAllValidation, 
+    studantsController.getAll
+
+);
+
+const getStudentById = router.get('/', 
+    
+    studantsController.getByIdValidation,
+    studantsController.getById
+
+);
+
+const getStudentByCpf = router.get('/cpf/:cpf', 
+    
+    studantsController.getByCpfValidation, 
+    studantsController.getByCpf
+
+);
+
+const getStudentByName = router.get('/nome/:name', 
+    
+    studantsController.getByNameValidation, 
+    studantsController.getByName
+
+);
+
+const getStudentBySubject = router.get('/materiaId/:subjactId',
+    
+    studantsController.getAllValidation,
+    studantsController.getBySubjectId    
+
+);
+
+export {
+
+    enrollStudent, 
+    updateStudentByCpf,
+    removeStudantByCpf,
+    getAllStudents, 
+    getStudentByCpf, 
+    getStudentByName, 
+    getStudentBySubject, 
+    getStudentById 
+
+};
