@@ -1,4 +1,4 @@
-import { Query } from "../../../interfaces/query.js";
+import { Query } from "../../../interfaces/Query.js";
 import { ptBrErros } from "../../../services/Translations.service.js";
 import Joi from "joi";
 

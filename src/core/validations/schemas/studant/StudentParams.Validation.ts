@@ -1,8 +1,8 @@
 import Joi from "joi";
-import { Params } from "../../../interfaces/params.js";
+import { Param } from "../../../interfaces/Param.js";
 import { ptBrErros } from "../../../services/Translations.service.js";
 
-export const paramsValidation: Joi.ObjectSchema<Params> = Joi.object({
+export const paramsValidation: Joi.ObjectSchema<Param> = Joi.object({
     
     id:
         Joi.string()

@@ -1,8 +1,8 @@
-import { Studants } from '../../../interfaces/studant.js';
+import { Studant } from '../../../interfaces/Studant.js';
 import { ptBrErros } from '../../../services/Translations.service.js';  
 import Joi from 'joi';
 
-export const bodyValidation: Joi.ObjectSchema<Studants> = Joi.object({
+export const bodyValidation: Joi.ObjectSchema<Studant> = Joi.object({
     
     name:
         Joi.string()
