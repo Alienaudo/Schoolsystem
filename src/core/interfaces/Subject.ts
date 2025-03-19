@@ -1,4 +1,4 @@
-export interface subject {
+export interface Subject {
     
     subjectName: string,
     hours: number,

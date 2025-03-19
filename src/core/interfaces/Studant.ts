@@ -1,4 +1,4 @@
-export interface Studants {
+export interface Studant {
     
     name: string,
     birthdate: Date,
