@@ -73,8 +73,15 @@ app.use('/api/estudantes/materiaId/:subjactId',
  */
 app.use('/api/professores',
 
-    c.getAllTeachers,
-    c.updateTeacher,
+    c.registerTeacher,
+    c.getAllTeachers
+
+);
+
+app.use('/api/professores/cpf/:cpf',
+
+    c.getTeacherByCpf,
+    c.updateTeacherByCpf,
     c.removeTeacherByCpf
 
 );
@@ -82,12 +89,6 @@ app.use('/api/professores',
 app.use('/api/professores/id/:id',
 
     c.getTeacherById
-
-);
-
-app.use('/api/professores/cpf/:cpf',
-
-    c.getTeacherByCpf
 
 );
 

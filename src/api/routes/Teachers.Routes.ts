@@ -12,7 +12,7 @@ const registerTeacher = router.post('/',
     
 );
 
-const updateTeacher = router.put('/', 
+const updateTeacherByCpf = router.put('/', 
 
     teacherController.updateValidation,
     teacherController.update
@@ -64,7 +64,7 @@ const getTeacherBySubjactId = router.get('/materiaId/:subjactId',
 export {
 
     registerTeacher,
-    updateTeacher,
+    updateTeacherByCpf,
     removeTeacherByCpf,
     getAllTeachers,
     getTeacherById,
