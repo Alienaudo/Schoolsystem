@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 
 import * as a from './routes/Subject.Routes.js';
-import * as b from './routes/Studants.Routes.js';   
+import * as b from './routes/Students.Routes.js';   
 import * as c from './routes/Teachers.Routes.js'
 
 dotenv.config();
