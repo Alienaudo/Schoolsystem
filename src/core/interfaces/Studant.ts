@@ -1,7 +1,7 @@
 export interface Studant {
     
     name: string,
-    birthdate: Date,
+    birthdate: Date, // 'YYYY-MM-DD HH:MM:SS.ffffff'
     gender: string,
     cpf: string,
     phone?: string | undefined,
