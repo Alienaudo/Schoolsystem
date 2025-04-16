@@ -1,33 +1,29 @@
 import express from 'express';
-import dotenv from 'dotenv';
+import 'dotenv/config';
 
 import * as a from './routes/Subject.Routes.js';
-import * as b from './routes/Students.Routes.js';   
-import * as c from './routes/Teachers.Routes.js'
+import * as b from './routes/Students.Routes.js';
+import * as c from './routes/Teachers.Routes.js';
 
-dotenv.config();
+const server = express();
 
-const app = express();
-const host: string = process.env.HOST || 'localhost';
-const port: number = parseInt(process.env.PORT_SERVER || '3000', 10);
+server.use(express.json());
 
-app.use(express.json());
-
-app.route('/').get((_, res) => { res.send('OK!') });
+server.route('/').get((_, res) => { res.send('OK!') });
 
 /**
  * Subjects rotas.
  */
-app.use('/api/materias', 
-    
-    a.getAllSubjacts,
+server.use('/api/materias',
+
     a.registerSubjact,
+    a.getAllSubjacts,
     a.updateSubjact,
     a.removeSubjact
 
 );
 
-app.use('/api/materias/id/:id',
+server.use('/api/materias/id/:id',
 
     a.getSubjectById
 
@@ -36,34 +32,35 @@ app.use('/api/materias/id/:id',
 /**
  * Students rotas.
  */
-app.use('/api/estudantes', 
+server.use('/api/estudantes',
 
-    b.enrollStudent, 
+    b.enrollStudent,
     b.getAllStudents
 
 );
-app.use('/api/estudantes/cpf/:cpf', 
-    
+
+server.use('/api/estudantes/cpf/:cpf',
+
     b.getStudentByCpf,
     b.updateStudentByCpf,
     b.removeStudantByCpf
 
 );
 
-app.use('/api/estudantes/materiaid/:id', 
-    
+server.use('/api/estudantes/materiaid/:id',
+
     b.getStudentById
 
 );
 
-app.use('/api/estudantes/nome/:name', 
-    
+server.use('/api/estudantes/nome/:name',
+
     b.getStudentByName
 
 );
 
-app.use('/api/estudantes/materiaId/:subjactId', 
-    
+server.use('/api/estudantes/materiaId/:subjactId',
+
     b.getStudentBySubject
 
 );
@@ -71,14 +68,14 @@ app.use('/api/estudantes/materiaId/:subjactId',
 /**
  * Teachers rotas.
  */
-app.use('/api/professores',
+server.use('/api/professores',
 
     c.registerTeacher,
     c.getAllTeachers
 
 );
 
-app.use('/api/professores/cpf/:cpf',
+server.use('/api/professores/cpf/:cpf',
 
     c.getTeacherByCpf,
     c.updateTeacherByCpf,
@@ -86,28 +83,22 @@ app.use('/api/professores/cpf/:cpf',
 
 );
 
-app.use('/api/professores/id/:id',
+server.use('/api/professores/id/:id',
 
     c.getTeacherById
 
 );
 
-app.use('/api/professores/nome/:name',
+server.use('/api/professores/nome/:name',
 
     c.getTeacherByName
 
 );
 
-app.use('/api/professores/materiaId/:subjactId',
+server.use('/api/professores/materiaId/:subjactId',
 
     c.getTeacherBySubjactId
-    
+
 );
 
-app.listen(port, host, (err) => {
-
-    if (err) throw new Error(err.message);
-    
-	console.log(`Server running at http://${host}:${port}/`);
-    
-});
+export default server;
