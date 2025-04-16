@@ -1,4 +1,4 @@
-FROM node:23.9.0
+FROM node:23
 
 WORKDIR /app
 
@@ -10,6 +10,6 @@ RUN apt-get update && \
 COPY package.json ./
 COPY pnpm-lock.yaml ./
 
-RUN npm install
+RUN pnpm install
 
 COPY . .
