@@ -1,6 +1,6 @@
-import { beforeAll, describe, test } from "vitest";
-import { testServer } from "../testServer.setup";
-import { Studant } from "../../src/core/interfaces/Studant";
+import { afterAll, beforeAll, describe, test } from "vitest";
+import { testServer } from "../../testServer.setup";
+import { Studant } from "../../../src/core/interfaces/Studant";
 
 describe('Testa metodo "getAll" da classe StudentController.', () => {
 
@@ -19,6 +19,7 @@ describe('Testa metodo "getAll" da classe StudentController.', () => {
             subjectId: 1
 
         };
+
 
         testServer
             .post('/api/estudantes')
@@ -53,6 +54,13 @@ describe('Testa metodo "getAll" da classe StudentController.', () => {
 
         expect(res.statusCode).toEqual(400);
         expect(res.body).toHaveProperty('errors.query.limit');
+
+    });
+
+
+    afterAll(() => {
+
+        testServer.delete('/api/estudantes/cpf/509.590.981-27');
 
     });
 
