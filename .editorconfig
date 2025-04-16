@@ -10,3 +10,12 @@ insert_final_newline = true
 [docker-compose.yml]
 indent_style = space
 indent_size = 2
+
+
+[jest.config.js]
+indent_style = space
+indent_size = 2
+
+[package.json]
+indent_style = space
+indent_size = 2
