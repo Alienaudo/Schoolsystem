@@ -25,7 +25,7 @@
     "migrate:dev": "NODE_ENV=development node dist/src/database/Migrator.js",
     "migrate:test": "NODE_ENV=test node dist/src/database/Migrator.js",
     "migrate:prod": "NODE_ENV=production node dist/src/database/Migrator.js",
-    "seed": "NODE_ENV=development node dist/src/database/Seeder.js"
+    "seed": "node dist/src/database/Seeder.js"
   },
   "author": "Tiago S.Veneza",
   "license": "ISC",
