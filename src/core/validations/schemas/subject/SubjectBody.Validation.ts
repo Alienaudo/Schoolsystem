@@ -1,5 +1,5 @@
-import { ptBrErros } from '../../../services/Translations.service.js'; 
-import { Subject } from '../../../interfaces/Subject.js';  
+import { ptBrErros } from '../../../services/Translations.service.js';   
+import { Subject } from '../../../interfaces/Subject.js';    
 import Joi from 'joi';
 
 export const bodyValidation: Joi.ObjectSchema<Subject> = Joi.object({

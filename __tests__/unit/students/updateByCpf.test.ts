@@ -1,6 +1,6 @@
 import { describe, test, beforeAll } from "vitest";
-import { testServer } from "../testServer.setup";
-import { Studant } from "../../src/core/interfaces/Studant";
+import { testServer } from "../../testServer.setup";
+import { Studant } from "../../../src/core/interfaces/Studant";
 
 describe('Testa método updateByCpf da classse StudentsController.', () => {
 
@@ -22,7 +22,7 @@ describe('Testa método updateByCpf da classse StudentsController.', () => {
 
         testServer
             .post('/api/estudantes')
-            .send(body)
+            .send(body);
 
     });
 

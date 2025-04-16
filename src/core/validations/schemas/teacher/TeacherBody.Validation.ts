@@ -2,6 +2,10 @@ import { Teacher } from '../../../interfaces/Teacher.js';
 import { ptBrErros } from '../../../services/Translations.service.js';
 import Joi from 'joi';
 
+const nameValidate: RegExp = /^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\s[A-Za-zÀ-ÖØ-öø-ÿ]+)+$/;
+const cpfValidate: RegExp = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+const phoneValidate: RegExp = /^(?:\+55\s?)?\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/;
+
 export const bodyValidation: Joi.ObjectSchema<Teacher> = Joi.object({
 
     name:
@@ -9,6 +13,7 @@ export const bodyValidation: Joi.ObjectSchema<Teacher> = Joi.object({
             .required()
             .min(3)
             .max(150)
+            .pattern(nameValidate)
             .messages(ptBrErros),
 
     birthdate:
@@ -18,9 +23,10 @@ export const bodyValidation: Joi.ObjectSchema<Teacher> = Joi.object({
 
     cpf:
         Joi.string()
+            .pattern(new RegExp(/(^[0-9]{3}\.)([0-9]{3}\.)([0-9]{3})(\-[0-9]{2}$)/))
             .required()
-            .min(14)
-            .max(14)
+            .length(14)
+            .pattern(cpfValidate)
             .messages(ptBrErros),
 
     gender:
@@ -35,8 +41,8 @@ export const bodyValidation: Joi.ObjectSchema<Teacher> = Joi.object({
     phone:
         Joi.string()
             .optional()
-            .min(15)
-            .max(15)
+            .length(15)
+            .pattern(phoneValidate)
             .messages(ptBrErros),
 
     email:

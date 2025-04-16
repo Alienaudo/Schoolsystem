@@ -1,10 +1,10 @@
 import { describe, expect, test } from "vitest";
-import { testServer } from "../testServer.setup";
-import { Studant } from "../../src/core/interfaces/Studant";
+import { testServer } from "../../testServer.setup";
+import { Studant } from "../../../src/core/interfaces/Studant";
 
 describe('Testa o método register da classe StudentsController.', () => {
 
-    let body: Studant = {
+    const body: Studant = {
 
         name: 'Alfredo de Souza Ramos',
         birthdate: new Date('2025-01-02 13:30:35.556'),

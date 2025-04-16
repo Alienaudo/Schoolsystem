@@ -1,10 +1,10 @@
-import { describe, test } from "vitest";
-import { Studant } from "../../src/core/interfaces/Studant";
-import { testServer } from "../testServer.setup";
+import { beforeAll, describe, test } from "vitest";
+import { Studant } from "../../../src/core/interfaces/Studant";
+import { testServer } from "../../testServer.setup";
 
 describe('Testa o método remove da classe StudentController.', () => {
 
-    test('Apaga estudante.', async () => {
+    beforeAll(() => {
 
         const body: Studant = {
 
@@ -23,6 +23,10 @@ describe('Testa o método remove da classe StudentController.', () => {
         testServer
             .post('/api/estudantes')
             .send(body);
+
+    });
+
+    test('Apaga estudante.', async () => {
 
         const res = await testServer
             .delete('/api/estudantes/cpf/509.590.981-27');

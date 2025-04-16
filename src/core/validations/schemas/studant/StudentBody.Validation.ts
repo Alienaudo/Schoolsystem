@@ -2,6 +2,10 @@ import { Studant } from '../../../interfaces/Studant.js';
 import { ptBrErros } from '../../../services/Translations.service.js';  
 import Joi from 'joi';
 
+const nameValidate: RegExp = /^[A-Za-zÀ-ÖØ-öø-ÿ]+(?:\s[A-Za-zÀ-ÖØ-öø-ÿ]+)+$/;
+const cpfValidate: RegExp = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
+const phoneValidate: RegExp = /^(?:\+55\s?)?\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/;
+
 export const bodyValidation: Joi.ObjectSchema<Studant> = Joi.object({
     
     name:
@@ -9,6 +13,7 @@ export const bodyValidation: Joi.ObjectSchema<Studant> = Joi.object({
             .required()
             .min(3)
             .max(150)
+            .pattern(nameValidate)
             .messages(ptBrErros),
 
     birthdate: 
@@ -19,8 +24,7 @@ export const bodyValidation: Joi.ObjectSchema<Studant> = Joi.object({
     gender: 
         Joi.string()
             .required()
-            .min(1)
-            .max(1)
+            .length(1)
             .uppercase()
             .valid('M', 'F')
             .messages(ptBrErros),
@@ -28,15 +32,15 @@ export const bodyValidation: Joi.ObjectSchema<Studant> = Joi.object({
     cpf:
         Joi.string()
             .required()
-            .min(14)
-            .max(14)
+            .length(14)
+            .pattern(cpfValidate)
             .messages(ptBrErros),
     
     phone:
         Joi.string()
             .optional()
-            .min(15)
-            .max(15)
+            .length(15)
+            .pattern(phoneValidate)
             .messages(ptBrErros),
     
     email:
