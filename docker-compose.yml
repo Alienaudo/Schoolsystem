@@ -7,7 +7,7 @@ services:
     container_name: postgres
     
     environment:
-      POSTGRES_DB: ScholarDB
+      POSTGRES_DB: ${DB}
       POSTGRES_HOST: ${DB_HOST:-localhost}
       POSTGRES_USER: ${DB_USER:-admin}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
@@ -17,6 +17,9 @@ services:
 
     ports:
       - 5432:5432
+
+    networks:
+        - dbnet
       
   # api:
   #   image: node:23.9.0
@@ -32,3 +35,7 @@ services:
 
 volumes:
   postgres_volume:
+
+networks:
+  dbnet:
+    driver: bridge
