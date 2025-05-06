@@ -1,7 +1,8 @@
 export interface Subject {
-    
+
+    id?: number,
     subjectName: string,
-    hours: number,
+    hours: string,
     description: string
 
 };
