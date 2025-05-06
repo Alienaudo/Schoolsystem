@@ -1,10 +1,10 @@
-import { ptBrErros } from '../../../services/Translations.service.js';   
-import { Subject } from '../../../interfaces/Subject.js';    
+import { ptBrErros } from '../../../services/Translations.service.js';
+import { Subject } from '../../../interfaces/Subject.js';
 import Joi from 'joi';
 
 export const bodyValidation: Joi.ObjectSchema<Subject> = Joi.object({
-    
-    subjectName: 
+
+    subjectName:
         Joi.string()
             .required()
             .min(3)
@@ -14,8 +14,6 @@ export const bodyValidation: Joi.ObjectSchema<Subject> = Joi.object({
     hours:
         Joi.number()
             .required()
-            .min(1)
-            .max(3)
             .messages(ptBrErros),
 
     description:
