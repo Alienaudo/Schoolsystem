@@ -6,7 +6,7 @@
     "express": "^4.21.2",
     "joi": "^17.13.3",
     "pg": "^8.16.0",
-    "pnpm": "^9.15.9",
+    "pnpm": "^10.0.0",
     "ts-dotenv": "^0.9.1"
   },
   "name": "schoolsystem",
