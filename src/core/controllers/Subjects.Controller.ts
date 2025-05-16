@@ -3,7 +3,7 @@ import { Param } from "../interfaces/Param.js";
 import { Query } from "../interfaces/Query.js";
 import { paramsValidation } from "../validations/schemas/subject/SubjectParams.Validation.js";
 import { queryValidation } from "../validations/schemas/subject/SubjactQuery.Validation.js";
-import { provRegister, provUpdate } from "../../database/providers/Subject.Provider.js";
+import { provCount, provGetAll, provGetById, provRegister, provRemove, provUpdate } from "../../database/providers/Subject.Provider.js";
 import { Subjects } from "../../database/models/kysely-types.js";
 import validation from "../../api/middleware/Validation.js";
 import { bodyValidation } from "../validations/schemas/subject/SubjectBody.Validation.js";
@@ -21,7 +21,8 @@ export default class SubjectController {
 
     /**
      * Registra a matéria na base de dados.
-     * Recebe uma requisição body. 
+     * Recebe uma requisição body.
+     * Retorna o id da matéria cadastrada.
     */
     public async register(req: Request<{}, {}, Subjects>, res: Response): Promise<void> {
 
@@ -46,7 +47,7 @@ export default class SubjectController {
 
         console.log(result);
 
-        res.status(201).send({ id: result });
+        res.status(201).json({ id: result });
 
     };
 
@@ -55,20 +56,37 @@ export default class SubjectController {
      */
     public updateValidation: RequestHandler = validation({
 
-        params: paramsValidation
+        body: bodyValidation
 
     });
 
     /**
      * Atualiza as informações da matéria.
      * Utiliza o id da matéria, como parametro.
+     * Retorna o id da matéria.
     */
-    public async update(req: Request<{}, {}, Subjects>, res: Response): Promise<void> {
+    public async update(req: Request<{}, {}, Subjects, Query>, res: Response): Promise<void> {
 
         console.log('Requisição recebida em update');
-        console.log('Params:', req.body);
+        console.log('Params:', req.query.id, req.body);
 
-        const result = await provUpdate(req.body);
+        if (!req.query.id) {
+
+            res.status(400).json({
+
+                erros: {
+
+                    default: 'Parametro "id" obrigatório.',
+
+                },
+
+            })
+
+            return;
+
+        }
+
+        const result = await provUpdate(req.query.id, req.body);
 
         if (result instanceof Error) {
 
@@ -84,7 +102,7 @@ export default class SubjectController {
 
         }
 
-        res.status(201).send({ id: result });
+        res.status(204).json(result);
 
     };
 
@@ -100,6 +118,7 @@ export default class SubjectController {
     /**
      * Retorna todos as metérias cadastrados na base de dados.
      * Recebe requisições: headers e query.
+     * Retorna um json com as matéria encontradas.
     */
     public async getAll(req: Request<{}, {}, {}, Query>, res: Response): Promise<void> {
 
@@ -107,7 +126,53 @@ export default class SubjectController {
         console.log('Headers:', req.headers);
         console.log('Query:', req.query);
 
-        res.status(500).send('getAll: Não implementado');
+        const result = await provGetAll(
+
+            req.query.page || 1,
+            req.query.limit || 7,
+            req.query.filter || ''
+
+        );
+
+        const count = await provCount(req.query.filter || '');
+
+        if (result instanceof Error) {
+
+            res.status(500).send({
+
+                errors: {
+
+                    default: result.message,
+
+                }
+
+            })
+
+            return;
+
+        }
+
+        if (count instanceof Error) {
+
+            res.status(500).send({
+
+                errors: {
+
+                    default: count.message,
+
+                }
+
+            })
+
+
+            return;
+
+        }
+
+        res.set('access-control-expose-headers', 'x-total-count');
+        res.set('x-total-count', `${count}`);
+
+        res.status(200).send(result);
 
     };
 
@@ -123,18 +188,70 @@ export default class SubjectController {
     /**
      * Retorna a metéria com o id especificado.
      * Recebe parametros (params).
+     * Retorna um json com a matéria.
     */
     public async getById(req: Request<Param>, res: Response): Promise<void> {
 
         console.log('Requisição recebida em getById');
         console.log('Params:', req.params);
 
-        res.status(500).send('getById: Não implementado');
+        if (!req.params.id) {
+
+            res.status(400).json({
+
+                errors: {
+
+                    default: 'O paramêtro "id" precisa ser informado.',
+
+                }
+
+            });
+
+            return;
+
+        }
+
+        if (typeof req.params.id === 'string') {
+
+            res.status(400).json({
+
+                errors: {
+
+                    default: 'Favor informar um número.',
+
+                }
+
+            });
+
+            return;
+
+        }
+
+
+        const result = await provGetById(req.params.id);
+
+        if (result instanceof Error) {
+
+            res.status(500).json({
+
+                error: {
+
+                    default: result.message,
+
+                }
+
+            })
+
+            return;
+
+        }
+
+        res.status(200).json(result);
 
     };
 
     /**
-     * Valida os parametros (params) do método getTeacherBySubject.
+     * Valida os parametros (params) do método removeValidation.
      */
     public removeValidation: RequestHandler = validation({
 
@@ -145,12 +262,62 @@ export default class SubjectController {
     /**
      * Remove a metéria, com o id especificado, da base de dados.
     */
-    public async remove(req: Request<Param>, res: Response): Promise<void> {
+    public async remove(req: Request<{}, {}, {}, Query>, res: Response): Promise<void> {
 
         console.log('Requisição recebida em removeByCpf');
-        console.log('Params:', req.params);
+        console.log('Params:', req.query.id);
 
-        res.status(500).send('removeByCpf: Não implementado');
+        if (!req.query.id) {
+
+            res.status(400).json({
+
+                errors: {
+
+                    default: 'O paramêtro "id" precisa ser informado.',
+
+                }
+
+            });
+
+            return;
+
+        }
+        /*
+                if (typeof req.query.id === 'string') {
+        
+                    res.status(400).json({
+        
+                        errors: {
+        
+                            default: 'Favor informar um número.',
+        
+                        }
+        
+                    });
+        
+                    return;
+        
+                }
+        */
+        const result = await provRemove(Number(req.query.id));
+
+        if (result instanceof Error) {
+
+            res.status(500).json({
+
+                error: {
+
+                    default: result.message,
+
+                }
+
+            })
+
+            return;
+
+        }
+
+        res.status(204).send();
 
     };
 
