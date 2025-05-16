@@ -282,23 +282,7 @@ export default class SubjectController {
             return;
 
         }
-        /*
-                if (typeof req.query.id === 'string') {
-        
-                    res.status(400).json({
-        
-                        errors: {
-        
-                            default: 'Favor informar um número.',
-        
-                        }
-        
-                    });
-        
-                    return;
-        
-                }
-        */
+
         const result = await provRemove(Number(req.query.id));
 
         if (result instanceof Error) {
