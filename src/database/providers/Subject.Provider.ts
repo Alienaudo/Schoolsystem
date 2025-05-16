@@ -3,8 +3,10 @@ import db from "../db.js";
 import { DB } from "../models/kysely-types.js";
 import { Kysely } from "kysely";
 
-const provRegister = async (subject: DB['subjects']): Promise<number | Error> => {
-    const Database: Kysely<DB> = db;
+const Database: Kysely<DB> = db;
+type typeDB = DB['subjects'];
+
+const provRegister = async (subject: typeDB): Promise<number | Error> => {
 
     try {
 
@@ -30,7 +32,7 @@ const provRegister = async (subject: DB['subjects']): Promise<number | Error> =>
 
         }
 
-        throw new Error('Erro ao cadastar matéria!');
+        throw new Error('Erro ao registrar!');
 
     } catch (error: any) {
 
@@ -40,8 +42,7 @@ const provRegister = async (subject: DB['subjects']): Promise<number | Error> =>
 
 };
 
-const provUpdate = async (subject: DB['subjects']): Promise<number | Error> => {
-    const Database: Kysely<DB> = db;
+const provUpdate = async (id: number, body: typeDB): Promise<number | Error> => {
 
     try {
 
@@ -49,13 +50,13 @@ const provUpdate = async (subject: DB['subjects']): Promise<number | Error> => {
             .updateTable('subjects')
             .set(
                 {
-                    subjectName: subject.subjectName || undefined,
-                    hours: Number(subject.hours) || undefined,
-                    description: subject.description || undefined,
+                    subjectName: body.subjectName || undefined,
+                    hours: Number(body.hours) || undefined,
+                    description: body.description || undefined,
 
                 },
             )
-            .where('subjects.id', '=', Number(subject.id))
+            .where('subjects.id', '=', id)
             .returning(['id'])
             .executeTakeFirstOrThrow();
 
@@ -69,14 +70,16 @@ const provUpdate = async (subject: DB['subjects']): Promise<number | Error> => {
 
 };
 
-const provGetAll = async (): Promise<{} | Error> => {
-    const Database: Kysely<DB> = db;
+const provGetAll = async (page: number, limit: number, filter: string): Promise<Subject[] | Error> => {
 
     try {
 
         const result: Subject[] = await Database
             .selectFrom('subjects')
             .selectAll('subjects')
+            .where('subjects.subjectName', 'like', `%${filter}%`)
+            .offset((page - 1) * limit)
+            .limit(limit)
             .execute();
 
         return result;
@@ -86,11 +89,73 @@ const provGetAll = async (): Promise<{} | Error> => {
         throw new Error(error);
 
     }
+
 };
 
-const provGetById = async () => { };
+const provCount = async (filter: string = ''): Promise<number | Error> => {
 
-const provRemove = async () => { };
+    try {
+
+        const result = await Database
+            .selectFrom('subjects')
+            .where('subjects.subjectName', 'like', `${filter}`)
+            .select(({ fn }) => [
+
+                fn.count<number>('subjects.id').as('count')
+
+            ])
+            .executeTakeFirstOrThrow();
+
+        return result.count;
+
+    } catch (error: any) {
+
+        throw new Error(error);
+
+    }
+
+};
+
+const provGetById = async (id: number): Promise<Subject | Error> => {
+
+    try {
+
+        const result = await Database
+            .selectFrom('subjects')
+            .selectAll('subjects')
+            .where('subjects.id', '=', id)
+            .executeTakeFirstOrThrow();
+
+        if (!result) return new Error('Registro não emcontrada!');
+
+        return result;
+
+    } catch (error: any) {
+
+        throw new Error(error);
+
+    }
+
+};
+
+const provRemove = async (id: number): Promise<void | Error> => {
+
+    try {
+
+        const result = await Database
+            .deleteFrom('subjects')
+            .where('subjects.id', '=', id)
+            .executeTakeFirstOrThrow();
+
+        if (result.numDeletedRows > 0) result;
+
+    } catch (error: any) {
+
+        throw new Error(error);
+
+    }
+
+};
 
 export {
 
@@ -98,6 +163,7 @@ export {
     provUpdate,
     provRemove,
     provGetById,
-    provGetAll
+    provGetAll,
+    provCount
 
 };
