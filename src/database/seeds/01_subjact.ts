@@ -1,4 +1,4 @@
-import { DB } from "database/models/kysely-types.js";
+import { DB } from "../models/kysely-types.js";
 import { Kysely } from "kysely";
 
 export async function seed(db: Kysely<DB>): Promise<void> {

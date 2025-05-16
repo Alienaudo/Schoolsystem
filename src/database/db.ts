@@ -17,7 +17,7 @@ const kyselyConfig: Record<string, pg.PoolConfig> = {
         port: 5432,
         user: user,
         password: password,
-        database: "SchoolDB_Dev",
+        database: "ScholarDB_Dev",
 
     },
 
