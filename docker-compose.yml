@@ -1,23 +1,26 @@
 services:
   db:
-    image: mariadb:11
-
-    container_name: mariadb
+    image: postgres:17
+    restart: always
+    shm_size: 128mb
+    
+    container_name: postgres
     
     environment:
-      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MARIADB_DATABASE: ScholarDB
-      MARIADB_HOST: ${DB_HOST:-localhost}
-      MARIADB_USER: ${DB_USER:-admin}
+      POSTGRES_DB: ${DB}
+      POSTGRES_HOST: ${DB_HOST:-localhost}
+      POSTGRES_USER: ${DB_USER:-admin}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
 
     volumes:
-      - mariadb_volume:/var/lib/mariadb
+      - postgres_volume:/var/lib/postgres
 
     ports:
-      - 3307:3306
-      
-    restart: always
+      - 5432:5432
 
+    networks:
+        - dbnet
+      
   # api:
   #   image: node:23.9.0
 
@@ -31,5 +34,8 @@ services:
   #     - ${PORT_SERVER:-3000}
 
 volumes:
-  mariadb_volume:
-    driver: local
+  postgres_volume:
+
+networks:
+  dbnet:
+    driver: bridge

@@ -1,12 +1,13 @@
 export interface Param {
 
-    id?: string | number;
+    id?: number | string;
     cpf?: string;
     phone?: string;
     name?: string;
     subjactId?: number;
-    subject_name?: string;
+    subjectName?: string;
     hours?: string;
     description?: string;
 
 };
+
