@@ -5,7 +5,7 @@ import { paramsValidation } from "../validations/schemas/subject/SubjectParams.V
 import { queryValidation } from "../validations/schemas/subject/SubjactQuery.Validation.js";
 import { provCount, provGetAll, provGetById, provRegister, provRemove, provUpdate } from "../../database/providers/Subject.Provider.js";
 import { Subjects } from "../../database/models/kysely-types.js";
-import validation from "../../api/middleware/Validation.js";
+import { validation } from "../../api/middleware/Validation.js";
 import { bodyValidation } from "../validations/schemas/subject/SubjectBody.Validation.js";
 
 export default class SubjectController {
