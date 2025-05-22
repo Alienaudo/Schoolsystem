@@ -1,5 +1,7 @@
 
-🚀 **Em andamento:** estou desenvolvendo um **Sistema de Gerenciamento Escolar** open-source!
+🚀 **Em andamento:** estou desenvolvendo um **Sistema de Gerenciamento Escolar** open-source.
+
+---
 
  💡 **O que é?**
  Um painel web para controlar as principais operações de uma escola, com foco em três entidades centrais:
@@ -33,3 +35,47 @@
  [https://github.com/Alienaudo/Schoolsystem](https://github.com/Alienaudo/Schoolsystem)
 
 Sinta-se à vontade para ajustar emojis, ênfases ou a ordem dos tópicos para que fique com a sua cara!
+
+## 🧪 Como testar a aplicação
+
+Siga os passos abaixo para executar e testar a aplicação localmente:
+
+### 1. Suba os containers com Docker
+
+Certifique-se de que o Docker e o Docker Compose estão instalados na sua máquina.
+
+```bash
+docker-compose up -d
+```
+
+### 2. Execute as migrações no banco de dados
+
+Após os containers estarem em execução, rode as migrações para preparar o banco de dados:
+
+```bash
+pnpm migrate:prod latest
+```
+
+### 3. Inicie a aplicação
+
+Inicie o servidor em ambiente de produção:
+
+```bash
+pnpm start
+```
+
+A aplicação deverá estar disponível em `http://localhost:3000` (ou conforme definido na configuração do projeto).
+
+---
+
+## ✅ Rodando os testes
+
+Para executar a suíte de testes da aplicação, use o comando abaixo:
+
+```bash
+pnpm test
+```
+
+Isso irá rodar os testes utilizando o framework **Vitest**.
+
+---
