@@ -13,15 +13,35 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
 
     volumes:
-      - postgres_volume:/var/lib/postgres
+      - postgres_volume:/var/lib/postgresql/data
 
     ports:
       - 5432:5432
 
     networks:
         - dbnet
-      
+
+  db_test:
+    image: postgres:17
+    restart: always
+    shm_size: 128mb
+
+    container_name: testDB
+
+    environment:
+      POSTGRES_DB: testDB
+      POSTGRES_HOST: localhost
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123 
+
+    ports:
+      - 5433:5432
+
+    networks:
+        - dbnet
+ 
   # api:
+  #   depends_on: ["db"]
   #   image: node:23.9.0
 
   #   environment:
