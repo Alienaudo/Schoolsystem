@@ -24,7 +24,7 @@ const kyselyConfig: Record<string, pg.PoolConfig> = {
     test: {
 
         host: "localhost",
-        port: 5432,
+        port: 5433,
         user: "postgres",
         password: "123",
         database: "testDB"
