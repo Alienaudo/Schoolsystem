@@ -1,4 +1,4 @@
-import { Migrator, FileMigrationProvider } from 'kysely';
+import { Migrator, FileMigrationProvider, MigrationResult, MigrationInfo } from 'kysely';
 import * as path from 'path';
 import { promises as fs } from 'fs';
 import db from './db.js';
@@ -24,13 +24,15 @@ async function runMigrations(): Promise<void> {
 
     if (results) {
 
-        results.forEach((result) => {
+        results.forEach((result: MigrationResult): void => {
 
             if (result.status === 'Success') {
 
                 console.log(`Migração "${result.migrationName}" executada com sucesso`);
 
-            } else if (result.status === 'Error') {
+            }
+
+            if (result.status === 'Error') {
 
                 console.error(`Erro ao executar a migração "${result.migrationName}"`);
 
@@ -57,13 +59,15 @@ async function migrateDown(): Promise<void> {
 
     if (results) {
 
-        results.forEach((result) => {
+        results.forEach((result: MigrationResult): void => {
 
             if (result.status === 'Success') {
 
                 console.log(`Migração "${result.migrationName}" revertida com sucesso`);
 
-            } else if (result.status === 'Error') {
+            }
+
+            if (result.status === 'Error') {
 
                 console.error(`Erro ao reverter a migração "${result.migrationName}"`);
 
@@ -88,7 +92,7 @@ async function listMigrations(): Promise<void> {
 
     const migrations = await migrator.getMigrations();
 
-    migrations.forEach((migration) => {
+    migrations.forEach((migration: MigrationInfo): void => {
 
         console.log(`Migração: ${migration.name}, Aplicada: ${migration.executedAt}`);
 
