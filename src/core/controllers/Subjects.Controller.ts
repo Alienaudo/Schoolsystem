@@ -2,7 +2,7 @@ import { Request, RequestHandler, Response } from "express";
 import { Param } from "../interfaces/Param.js";
 import { Query } from "../interfaces/Query.js";
 import { paramsValidation } from "../validations/schemas/subject/SubjectParams.Validation.js";
-import { queryValidation } from "../validations/schemas/subject/SubjactQuery.Validation.js";
+import { queryValidation } from "../validations/schemas/subject/SubjectQuery.Validation.js";
 import { provCount, provGetAll, provGetById, provRegister, provRemove, provUpdate } from "../../database/providers/Subject.Provider.js";
 import { Subjects } from "../../database/models/kysely-types.js";
 import { validation } from "../../api/middleware/Validation.js";
