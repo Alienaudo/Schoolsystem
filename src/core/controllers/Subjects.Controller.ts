@@ -26,28 +26,48 @@ export default class SubjectController {
     */
     public async register(req: Request<{}, {}, Subjects>, res: Response): Promise<void> {
 
-        console.log('Requisição recebida em register');
-        console.log('Body', req.body);
+        try {
 
-        const result = await provRegister(req.body);
+            if (res.headersSent) return;
 
-        if (result instanceof Error) {
+            console.log('Requisição recebida em register');
+            console.log('Body', req.body);
 
-            res.send(500).json({
+            const result = await provRegister(req.body);
+
+            if (result instanceof Error) {
+
+                res.status(500).json({
+
+                    errors: {
+
+                        default: result.message,
+
+                    }
+
+                });
+
+            }
+
+            res.status(201).json({
+
+                id: result
+
+            });
+
+        } catch (error: any) {
+
+            res.status(500).json({
 
                 errors: {
 
-                    default: result.message,
+                    default: error.message,
 
                 }
 
             });
 
         }
-
-        console.log(result);
-
-        res.status(201).json({ id: result });
 
     };
 
@@ -67,42 +87,64 @@ export default class SubjectController {
     */
     public async update(req: Request<{}, {}, Subjects, Query>, res: Response): Promise<void> {
 
-        console.log('Requisição recebida em update');
-        console.log('Params:', req.query.id, req.body);
+        try {
 
-        if (!req.query.id) {
+            if (res.headersSent) return;
 
-            res.status(400).json({
+            console.log('Requisição recebida em update');
+            console.log('Params:', req.query.id, req.body);
 
-                erros: {
+            if (!req.query.id) {
 
-                    default: 'Parametro "id" obrigatório.',
+                res.status(400).json({
 
-                },
+                    errors: {
 
-            })
+                        default: 'Parametro "id" obrigatório.',
 
-            return;
+                    },
 
-        }
+                })
 
-        const result = await provUpdate(req.query.id, req.body);
+                return;
 
-        if (result instanceof Error) {
+            }
+
+            const result = await provUpdate(req.query.id, req.body);
+
+            if (result instanceof Error) {
+
+                res.status(500).json({
+
+                    errors: {
+
+                        default: result.message,
+
+                    }
+
+                })
+
+            }
+
+            res.status(204).json({
+
+                id: result
+
+            });
+
+        } catch (error: any) {
 
             res.status(500).json({
 
                 errors: {
 
-                    default: result.message,
+                    default: error.message,
 
                 }
 
             })
 
         }
-
-        res.status(204).json(result);
 
     };
 
@@ -122,57 +164,75 @@ export default class SubjectController {
     */
     public async getAll(req: Request<{}, {}, {}, Query>, res: Response): Promise<void> {
 
-        console.log('Requisição recebida em getAll');
-        console.log('Headers:', req.headers);
-        console.log('Query:', req.query);
+        try {
 
-        const result = await provGetAll(
+            if (res.headersSent) return;
 
-            req.query.page || 1,
-            req.query.limit || 7,
-            req.query.filter || ''
+            console.log('Requisição recebida em getAll');
+            console.log('Headers:', req.headers);
+            console.log('Query:', req.query);
 
-        );
+            const result = await provGetAll(
 
-        const count = await provCount(req.query.filter || '');
+                req.query.page || 1,
+                req.query.limit || 7,
+                req.query.filter || ''
 
-        if (result instanceof Error) {
+            );
+
+            const count = await provCount(req.query.filter || '');
+
+            if (result instanceof Error) {
+
+                res.status(500).send({
+
+                    errors: {
+
+                        default: result.message,
+
+                    }
+
+                })
+
+                return;
+
+            }
+
+            if (count instanceof Error) {
+
+                res.status(500).send({
+
+                    errors: {
+
+                        default: count.message,
+
+                    }
+
+                })
+
+
+                return;
+
+            }
+
+            res.set('access-control-expose-headers', 'x-total-count');
+            res.set('x-total-count', `${count}`);
+
+            res.status(200).send(result);
+
+        } catch (error) {
 
             res.status(500).send({
 
                 errors: {
 
-                    default: result.message,
+                    default: error,
 
                 }
 
             })
 
-            return;
-
         }
-
-        if (count instanceof Error) {
-
-            res.status(500).send({
-
-                errors: {
-
-                    default: count.message,
-
-                }
-
-            })
-
-
-            return;
-
-        }
-
-        res.set('access-control-expose-headers', 'x-total-count');
-        res.set('x-total-count', `${count}`);
-
-        res.status(200).send(result);
 
     };
 
@@ -192,61 +252,79 @@ export default class SubjectController {
     */
     public async getById(req: Request<Param>, res: Response): Promise<void> {
 
-        console.log('Requisição recebida em getById');
-        console.log('Params:', req.params);
+        try {
 
-        if (!req.params.id) {
+            if (res.headersSent) return;
 
-            res.status(400).json({
+            console.log('Requisição recebida em getById');
+            console.log('Params:', req.params);
 
-                errors: {
+            if (!req.params.id) {
 
-                    default: 'O paramêtro "id" precisa ser informado.',
+                res.status(400).json({
 
-                }
+                    errors: {
 
-            });
+                        default: 'O paramêtro "id" precisa ser informado.',
 
-            return;
+                    }
 
-        }
+                });
 
-        if (typeof req.params.id === 'string') {
+                return;
 
-            res.status(400).json({
+            }
 
-                errors: {
+            if (typeof req.params.id === 'string') {
 
-                    default: 'Favor informar um número.',
+                res.status(400).json({
 
-                }
+                    errors: {
 
-            });
+                        default: 'Favor informar um número.',
 
-            return;
+                    }
 
-        }
+                });
+
+                return;
+
+            }
 
 
-        const result = await provGetById(req.params.id);
+            const result = await provGetById(req.params.id);
 
-        if (result instanceof Error) {
+            if (result instanceof Error) {
+
+                res.status(500).json({
+
+                    error: {
+
+                        default: result.message,
+
+                    }
+
+                })
+
+                return;
+
+            }
+
+            res.status(200).json(result);
+
+        } catch (error) {
 
             res.status(500).json({
 
                 error: {
 
-                    default: result.message,
+                    default: error,
 
                 }
 
             })
 
-            return;
-
         }
-
-        res.status(200).json(result);
 
     };
 
@@ -264,44 +342,62 @@ export default class SubjectController {
     */
     public async remove(req: Request<{}, {}, {}, Query>, res: Response): Promise<void> {
 
-        console.log('Requisição recebida em removeByCpf');
-        console.log('Params:', req.query.id);
+        try {
 
-        if (!req.query.id) {
+            if (res.headersSent) return;
 
-            res.status(400).json({
+            console.log('Requisição recebida em remove');
+            console.log('Params:', req.query.id);
 
-                errors: {
+            if (!req.query.id) {
 
-                    default: 'O paramêtro "id" precisa ser informado.',
+                res.status(400).json({
 
-                }
+                    errors: {
 
-            });
+                        default: 'O paramêtro "id" precisa ser informado.',
 
-            return;
+                    }
 
-        }
+                });
 
-        const result = await provRemove(Number(req.query.id));
+                return;
 
-        if (result instanceof Error) {
+            }
+
+            const result = await provRemove(Number(req.query.id));
+
+            if (result instanceof Error) {
+
+                res.status(500).json({
+
+                    error: {
+
+                        default: result.message,
+
+                    }
+
+                })
+
+                return;
+
+            }
+
+            res.status(204).send();
+
+        } catch (error) {
 
             res.status(500).json({
 
                 error: {
 
-                    default: result.message,
+                    default: error,
 
                 }
 
             })
 
-            return;
-
         }
-
-        res.status(204).send();
 
     };
 

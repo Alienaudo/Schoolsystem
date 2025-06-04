@@ -21,6 +21,7 @@ export const queryValidation: Joi.ObjectSchema<Query> = Joi.object({
     filter:
         Joi.string()
             .optional()
+            .max(25)
             .messages(ptBrErros)
 
 }).optional();
