@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:17
+    image: postgres:17.5-alpine
     restart: always
     shm_size: 128mb
     
@@ -22,7 +22,7 @@ services:
         - dbnet
 
   db_test:
-    image: postgres:17
+    image: postgres:17.5-alpine
     restart: always
     shm_size: 128mb
 
