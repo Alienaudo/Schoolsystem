@@ -1,7 +1,7 @@
 import { Subject } from "../../core/interfaces/Subject.js";
 import db from "../db.js";
 import { DB } from "../models/kysely-types.js";
-import { Kysely } from "kysely";
+import { AliasedAggregateFunctionBuilder, DeleteResult, ExpressionBuilder, Kysely } from "kysely";
 
 const Database: Kysely<DB> = db;
 type typeDB = DB['subjects'];
@@ -10,7 +10,11 @@ const provRegister = async (subject: typeDB): Promise<number | Error> => {
 
     try {
 
-        const result = await Database
+        const result: {
+
+            id: number;
+
+        } = await Database
             .insertInto('subjects')
             .values([
                 {
@@ -26,7 +30,9 @@ const provRegister = async (subject: typeDB): Promise<number | Error> => {
 
             return result.id;
 
-        } else if (typeof result === 'number') {
+        }
+
+        if (typeof result === 'number') {
 
             return result;
 
@@ -42,11 +48,15 @@ const provRegister = async (subject: typeDB): Promise<number | Error> => {
 
 };
 
-const provUpdate = async (id: number, body: typeDB): Promise<number | Error> => {
+const provUpdate = async (id: number, body: typeDB): Promise<void | Error> => {
 
     try {
 
-        const result = await Database
+        const result: {
+
+            id: number;
+
+        } = await Database
             .updateTable('subjects')
             .set(
                 {
@@ -60,7 +70,9 @@ const provUpdate = async (id: number, body: typeDB): Promise<number | Error> => 
             .returning(['id'])
             .executeTakeFirstOrThrow();
 
-        return result.id;
+        if (typeof result === 'object') return;
+
+        throw new Error('Erro ao atualizar!');
 
     } catch (error: any) {
 
@@ -74,9 +86,9 @@ const provGetAll = async (page: number, limit: number, filter: string): Promise<
 
     try {
 
-        const result: Subject[] = await Database
+        const result = await Database
             .selectFrom('subjects')
-            .selectAll('subjects')
+            .selectAll()
             .where('subjects.subjectName', 'like', `%${filter}%`)
             .offset((page - 1) * limit)
             .limit(limit)
@@ -95,11 +107,35 @@ const provGetAll = async (page: number, limit: number, filter: string): Promise<
 const provCount = async (filter: string = ''): Promise<number | Error> => {
 
     try {
+        /*
+                if (filter === '') {
+        
+                    const result: {
+        
+                        count: number;
+        
+                    } = await Database
+                        .selectFrom('subjects')
+                        .selectAll()
+                        .select(({ fn }: ExpressionBuilder<DB, "subjects">): AliasedAggregateFunctionBuilder<DB, "subjects", number, "count">[] => [
+        
+                            fn.count<number>('subjects.id').as('count')
+        
+                        ])
+                        .executeTakeFirstOrThrow();
+        
+                    return result.count;
+        
+                }
+        */
+        const result: {
 
-        const result = await Database
+            count: number;
+
+        } = await Database
             .selectFrom('subjects')
-            .where('subjects.subjectName', 'like', `${filter}`)
-            .select(({ fn }) => [
+            .where('subjects.subjectName', 'like', `%${filter}%`)
+            .select(({ fn }: ExpressionBuilder<DB, "subjects">): AliasedAggregateFunctionBuilder<DB, "subjects", number, "count">[] => [
 
                 fn.count<number>('subjects.id').as('count')
 
@@ -120,7 +156,7 @@ const provGetById = async (id: number): Promise<Subject | Error> => {
 
     try {
 
-        const result = await Database
+        const result: Subject = await Database
             .selectFrom('subjects')
             .selectAll('subjects')
             .where('subjects.id', '=', id)
@@ -142,16 +178,20 @@ const provRemove = async (id: number): Promise<void | Error> => {
 
     try {
 
-        const result = await Database
+        const result: DeleteResult = await Database
             .deleteFrom('subjects')
             .where('subjects.id', '=', id)
             .executeTakeFirstOrThrow();
 
-        if (result.numDeletedRows > 0) result;
+        if (Number(result.numDeletedRows) === 0) {
+
+            throw new Error(`Nenhuma matéria encontrada com id: ${id}`);
+
+        }
 
     } catch (error: any) {
 
-        throw new Error(error);
+        throw new Error(`Erro ao deletar subject com id: ${id}`, error);
 
     }
 
