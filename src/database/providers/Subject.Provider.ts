@@ -107,27 +107,7 @@ const provGetAll = async (page: number, limit: number, filter: string): Promise<
 const provCount = async (filter: string = ''): Promise<number | Error> => {
 
     try {
-        /*
-                if (filter === '') {
-        
-                    const result: {
-        
-                        count: number;
-        
-                    } = await Database
-                        .selectFrom('subjects')
-                        .selectAll()
-                        .select(({ fn }: ExpressionBuilder<DB, "subjects">): AliasedAggregateFunctionBuilder<DB, "subjects", number, "count">[] => [
-        
-                            fn.count<number>('subjects.id').as('count')
-        
-                        ])
-                        .executeTakeFirstOrThrow();
-        
-                    return result.count;
-        
-                }
-        */
+
         const result: {
 
             count: number;
@@ -162,7 +142,7 @@ const provGetById = async (id: number): Promise<Subject | Error> => {
             .where('subjects.id', '=', id)
             .executeTakeFirstOrThrow();
 
-        if (!result) return new Error('Registro não emcontrada!');
+        if (!result) return new Error('Registro não emcontrado!');
 
         return result;
 
