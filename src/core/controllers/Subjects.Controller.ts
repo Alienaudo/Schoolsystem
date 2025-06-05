@@ -275,7 +275,9 @@ export default class SubjectController {
 
             }
 
-            if (typeof req.params.id === 'string') {
+            const id: number = Number(req.params.id)
+
+            if (typeof id !== 'number') {
 
                 res.status(400).json({
 
@@ -292,7 +294,7 @@ export default class SubjectController {
             }
 
 
-            const result = await provGetById(req.params.id);
+            const result = await provGetById(id);
 
             if (result instanceof Error) {
 
@@ -312,13 +314,13 @@ export default class SubjectController {
 
             res.status(200).json(result);
 
-        } catch (error) {
+        } catch (error: any) {
 
             res.status(500).json({
 
-                error: {
+                errors: {
 
-                    default: error,
+                    default: error.message,
 
                 }
 
