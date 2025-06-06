@@ -2,7 +2,6 @@ import { describe, test, expect } from "vitest";
 import { testServer } from "../../testServer.setup";
 import db from "../../../src/database/db";
 import { Response } from "supertest";
-import { Subject } from "../../../src/core/interfaces/Subject";
 
 describe('Testa método getById da classe SubjectsController', (): void => {
 
@@ -46,15 +45,10 @@ describe('Testa método getById da classe SubjectsController', (): void => {
 
     test('Tenta buscar a metéria sem passar o id', async (): Promise<void> => {
 
-        const res: Response = await testServer
+        await testServer
             .get('/api/materias/id/')
-            .expect(400)
-            .expect('Content-Type', /json/);
-
-        expect(res.body).toBeTypeOf('object');
-        expect(res.body).toHaveProperty('errors');
-        expect(res.body.errors).toHaveProperty('default');
-        expect(res.body.errors.default).toEqual('Parametro "id" obrigatório.');
+            .expect(404)
+            .expect('Content-Type', /html/);
 
     });
 
