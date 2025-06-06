@@ -220,13 +220,13 @@ export default class SubjectController {
 
             res.status(200).send(result);
 
-        } catch (error) {
+        } catch (error: any) {
 
             res.status(500).send({
 
                 errors: {
 
-                    default: error,
+                    default: error.message,
 
                 }
 
@@ -292,7 +292,6 @@ export default class SubjectController {
                 return;
 
             }
-
 
             const result = await provGetById(id);
 
@@ -367,13 +366,31 @@ export default class SubjectController {
 
             }
 
-            const result = await provRemove(Number(req.query.id));
+            const id: number = Number(req.query.id)
+
+            if (typeof id !== 'number') {
+
+                res.status(400).json({
+
+                    errors: {
+
+                        default: 'Favor informar um número.',
+
+                    }
+
+                });
+
+                return;
+
+            }
+
+            const result = await provRemove(id);
 
             if (result instanceof Error) {
 
                 res.status(500).json({
 
-                    error: {
+                    errors: {
 
                         default: result.message,
 
@@ -387,13 +404,13 @@ export default class SubjectController {
 
             res.status(204).send();
 
-        } catch (error) {
+        } catch (error: any) {
 
             res.status(500).json({
 
-                error: {
+                errors: {
 
-                    default: error,
+                    default: error.message,
 
                 }
 
