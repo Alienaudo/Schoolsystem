@@ -16,7 +16,7 @@
     "test": "__tests__"
   },
   "scripts": {
-    "test": "vitest",
+    "test": "vitest --coverage",
     "start": "nodemon --env-file=.env ./dist/src/api/app.js",
     "build": "tsc --watch",
     "postinstall": "tsc",

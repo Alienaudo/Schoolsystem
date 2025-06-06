@@ -2,7 +2,7 @@ import { Request, RequestHandler, Response } from "express";
 import { Param } from "../interfaces/Param.js";
 import { Query } from "../interfaces/Query.js";
 import { paramsValidation } from "../validations/schemas/subject/SubjectParams.Validation.js";
-import { queryValidation } from "../validations/schemas/subject/SubjactQuery.Validation.js";
+import { queryValidation } from "../validations/schemas/subject/SubjectQuery.Validation.js";
 import { provCount, provGetAll, provGetById, provRegister, provRemove, provUpdate } from "../../database/providers/Subject.Provider.js";
 import { Subjects } from "../../database/models/kysely-types.js";
 import { validation } from "../../api/middleware/Validation.js";
@@ -220,13 +220,13 @@ export default class SubjectController {
 
             res.status(200).send(result);
 
-        } catch (error) {
+        } catch (error: any) {
 
             res.status(500).send({
 
                 errors: {
 
-                    default: error,
+                    default: error.message,
 
                 }
 
@@ -275,7 +275,9 @@ export default class SubjectController {
 
             }
 
-            if (typeof req.params.id === 'string') {
+            const id: number = Number(req.params.id)
+
+            if (typeof id !== 'number') {
 
                 res.status(400).json({
 
@@ -291,8 +293,7 @@ export default class SubjectController {
 
             }
 
-
-            const result = await provGetById(req.params.id);
+            const result = await provGetById(id);
 
             if (result instanceof Error) {
 
@@ -312,13 +313,13 @@ export default class SubjectController {
 
             res.status(200).json(result);
 
-        } catch (error) {
+        } catch (error: any) {
 
             res.status(500).json({
 
-                error: {
+                errors: {
 
-                    default: error,
+                    default: error.message,
 
                 }
 
@@ -365,13 +366,31 @@ export default class SubjectController {
 
             }
 
-            const result = await provRemove(Number(req.query.id));
+            const id: number = Number(req.query.id)
+
+            if (typeof id !== 'number') {
+
+                res.status(400).json({
+
+                    errors: {
+
+                        default: 'Favor informar um número.',
+
+                    }
+
+                });
+
+                return;
+
+            }
+
+            const result = await provRemove(id);
 
             if (result instanceof Error) {
 
                 res.status(500).json({
 
-                    error: {
+                    errors: {
 
                         default: result.message,
 
@@ -385,13 +404,13 @@ export default class SubjectController {
 
             res.status(204).send();
 
-        } catch (error) {
+        } catch (error: any) {
 
             res.status(500).json({
 
-                error: {
+                errors: {
 
-                    default: error,
+                    default: error.message,
 
                 }
 

@@ -70,7 +70,8 @@ describe('Test método update da classe SubjectController.', (): void => {
     test('Não encontrou o id', async (): Promise<void> => {
 
         const res: Response = await testServer
-            .put(`/api/materias?id=9999`)
+            .put('/api/materias')
+            .query({ id: 99999 })
             .send({
 
                 subjectName: '01_Test',
@@ -91,7 +92,8 @@ describe('Test método update da classe SubjectController.', (): void => {
     test('Deve atualizar a metéria, receber status "204".', async (): Promise<void> => {
 
         await testServer
-            .put(`/api/materias?id=${subjectId}`)
+            .put('/api/materias')
+            .query({ id: subjectId })
             .send({
 
                 subjectName: '01_Test',
@@ -132,7 +134,8 @@ describe('Test método update da classe SubjectController.', (): void => {
     test('Tenta atualizar matéria sem um nome', async (): Promise<void> => {
 
         const res: Response = await testServer
-            .put(`/api/materias?id=${subjectId}`)
+            .put('/api/materias')
+            .query({ id: subjectId })
             .send({
 
                 subjectName: '',
@@ -170,7 +173,8 @@ describe('Test método update da classe SubjectController.', (): void => {
     test('Tenta atualizar matéria passando nome muito curto', async (): Promise<void> => {
 
         const res: Response = await testServer
-            .put(`/api/materias?id=${subjectId}`)
+            .put('/api/materias')
+            .query({ id: subjectId })
             .send({
 
                 subjectName: '01',
@@ -208,7 +212,8 @@ describe('Test método update da classe SubjectController.', (): void => {
     test('Tenta atualizar matéria passando nome muito longo', async (): Promise<void> => {
 
         const res: Response = await testServer
-            .put(`/api/materias?id=${subjectId}`)
+            .put('/api/materias')
+            .query({ id: subjectId })
             .send({
 
                 subjectName: '02_Testttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttttt...',
@@ -246,7 +251,8 @@ describe('Test método update da classe SubjectController.', (): void => {
     test('Tenta atualizar matéria passando nome no formato inválido', async (): Promise<void> => {
 
         const res: Response = await testServer
-            .put(`/api/materias?id=${subjectId}`)
+            .put('/api/materias')
+            .query({ id: subjectId })
             .send({
 
                 subjectName: 999,
@@ -284,7 +290,8 @@ describe('Test método update da classe SubjectController.', (): void => {
     test('Tenta atualizar matéria passando horas com valor inválido', async (): Promise<void> => {
 
         const res: Response = await testServer
-            .put(`/api/materias?id=${subjectId}`)
+            .put('/api/materias')
+            .query({ id: subjectId })
             .send({
 
                 subjectName: '03_Test',
@@ -322,7 +329,8 @@ describe('Test método update da classe SubjectController.', (): void => {
     test('Tenta atualizar matéria passando horas no formato inválido', async (): Promise<void> => {
 
         const res: Response = await testServer
-            .put(`/api/materias?id=${subjectId}`)
+            .put('/api/materias')
+            .query({ id: subjectId })
             .send({
 
                 subjectName: '04_Test',
@@ -360,7 +368,8 @@ describe('Test método update da classe SubjectController.', (): void => {
     test('Tenta atualizar matéria sem uma descrição', async (): Promise<void> => {
 
         const res: Response = await testServer
-            .put(`/api/materias?id=${subjectId}`)
+            .put('/api/materias')
+            .query({ id: subjectId })
             .send({
 
                 subjectName: '05_Test',
@@ -398,7 +407,8 @@ describe('Test método update da classe SubjectController.', (): void => {
     test('Tenta atualizar matéria passando descrição muito curta', async (): Promise<void> => {
 
         const res: Response = await testServer
-            .put(`/api/materias?id=${subjectId}`)
+            .put('/api/materias')
+            .query({ id: subjectId })
             .send({
 
                 subjectName: '06_Test',
@@ -436,7 +446,8 @@ describe('Test método update da classe SubjectController.', (): void => {
     test('Tenta atualizar matéria passando descrição muito longa', async (): Promise<void> => {
 
         const res: Response = await testServer
-            .put(`/api/materias?id=${subjectId}`)
+            .put('/api/materias')
+            .query({ id: subjectId })
             .send({
 
                 subjectName: '07_Test',
@@ -474,7 +485,8 @@ describe('Test método update da classe SubjectController.', (): void => {
     test('Tenta atualizar matéria passando descrição no formato inválido', async (): Promise<void> => {
 
         const res: Response = await testServer
-            .put(`/api/materias?id=${subjectId}`)
+            .put('/api/materias')
+            .query({ id: subjectId })
             .send({
 
                 subjectName: '07_Test',
