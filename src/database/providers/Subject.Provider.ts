@@ -1,7 +1,7 @@
 import { Subject } from "../../core/interfaces/Subject.js";
 import db from "../db.js";
 import { DB } from "../models/kysely-types.js";
-import { AliasedAggregateFunctionBuilder, DeleteResult, ExpressionBuilder, Kysely } from "kysely";
+import { AliasedAggregateFunctionBuilder, ExpressionBuilder, Kysely } from "kysely";
 
 const Database: Kysely<DB> = db;
 type typeDB = DB['subjects'];
@@ -158,20 +158,24 @@ const provRemove = async (id: number): Promise<void | Error> => {
 
     try {
 
-        const result: DeleteResult = await Database
+        const exists = await Database
+            .selectFrom('subjects')
+            .where('subjects.id', '=', id)
+            .executeTakeFirst();
+
+        if (!exists) {
+
+            throw new Error(`Nenhuma matéria encontrada com id: ${id}`);
+        }
+
+        await Database
             .deleteFrom('subjects')
             .where('subjects.id', '=', id)
             .executeTakeFirstOrThrow();
 
-        if (Number(result.numDeletedRows) === 0) {
-
-            throw new Error(`Nenhuma matéria encontrada com id: ${id}`);
-
-        }
-
     } catch (error: any) {
 
-        throw new Error(`Erro ao deletar subject com id: ${id}`, error);
+        throw new Error(error.message);
 
     }
 
