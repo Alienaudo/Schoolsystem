@@ -1,6 +1,6 @@
 import { afterAll, beforeAll, describe, expect, test } from "vitest";
 import { up, down } from "../../../src/database/migrations/0001_create_table_Teachers.ts";
-import { up as upStudent, down as downStudent } from "../../../src/database/migrations/0000_create_table_Subjects.ts";
+import { up as upSubjects, down as downSubjects } from "../../../src/database/migrations/0000_create_table_Subjects.ts";
 import { DB } from "../../../src/database/models/kysely-types.d.js";
 import { Pool } from "pg";
 import { CamelCasePlugin, Kysely, PostgresDialect, TableMetadata } from "kysely";
@@ -29,13 +29,13 @@ describe('Testa migração 0001 que cria a tabela teachers', (): void => {
 
     beforeAll(async (): Promise<void> => {
 
-        await upStudent(db);
+        await upSubjects(db);
 
     });
 
     afterAll(async (): Promise<void> => {
 
-        await downStudent(db);
+        await downSubjects(db);
         await db.destroy();
 
     });
