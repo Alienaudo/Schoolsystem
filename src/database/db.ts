@@ -1,5 +1,5 @@
 import { Kysely, PostgresDialect, CamelCasePlugin } from "kysely";
-import pg from "pg";
+import { Pool, PoolConfig } from "pg";
 import "dotenv/config";
 import { DB } from "./models/kysely-types.js";
 
@@ -9,7 +9,7 @@ const port: number = parseInt(process.env.DB_PORT || '3306', 10);
 const user: string = process.env.DB_USER || 'root';
 const password: string = process.env.DB_ROOT_PASSWORD || '123';
 
-const kyselyConfig: Record<string, pg.PoolConfig> = {
+const kyselyConfig: Record<string, PoolConfig> = {
 
     development: {
 
@@ -52,10 +52,10 @@ if (!['development', 'test', 'production'].includes(env)) {
 
 }
 
-const poolConfig = kyselyConfig[env];
-const pool = new pg.Pool(poolConfig);
+const poolConfig: PoolConfig | undefined = kyselyConfig[env];
+const pool: Pool = new Pool(poolConfig);
 
-const db = new Kysely<DB>({
+const db: Kysely<DB> = new Kysely<DB>({
 
     dialect: new PostgresDialect({
 
