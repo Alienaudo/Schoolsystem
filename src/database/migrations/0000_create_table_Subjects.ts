@@ -1,4 +1,4 @@
-import { Kysely } from "kysely";
+import { ColumnDefinitionBuilder, Kysely } from "kysely";
 
 export async function up(db: Kysely<any>): Promise<void> {
 
@@ -7,23 +7,23 @@ export async function up(db: Kysely<any>): Promise<void> {
         await db.schema
             .createTable('subjects')
             .ifNotExists()
-            .addColumn('id', 'serial', (col) =>
+            .addColumn('id', 'serial', (col: ColumnDefinitionBuilder): ColumnDefinitionBuilder =>
 
                 col.primaryKey()
 
             )
-            .addColumn('subject_name', 'varchar(100)', (col) =>
+            .addColumn('subject_name', 'varchar(100)', (col: ColumnDefinitionBuilder): ColumnDefinitionBuilder =>
 
                 col.notNull()
                     .unique()
 
             )
-            .addColumn('hours', 'numeric', (col) =>
+            .addColumn('hours', 'numeric', (col: ColumnDefinitionBuilder): ColumnDefinitionBuilder =>
 
                 col.notNull()
 
             )
-            .addColumn('description', 'varchar(300)', (col) =>
+            .addColumn('description', 'varchar(300)', (col: ColumnDefinitionBuilder): ColumnDefinitionBuilder =>
 
                 col.notNull()
 
